@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/register/index.jsx";
+import ContactPage from "./pages/contact/index.jsx";
+import { Outlet } from "react-router-dom";
+import Header from "./components/Header/index.jsx"
+import Footer from "./components/Footer/index.jsx"
+import BookPage from "./pages/book/index.jsx";
+import Home from "./components/Home/index.jsx";
 
 const Layout = () => {
   return (
-    <>main page</>
+  <div className="layout-app">
+    <Header />
+    <Outlet />
+    <Footer />
+  </div>
   );
 };
 
@@ -14,6 +24,18 @@ export default function App() {
       path: "/",
       element: <Layout />,
       errorElement: <div>LOL error not found</div>,
+
+      children: [
+        { index: true, element: <Home /> },
+        {
+          path: "contact",
+          element: <ContactPage />,
+        },
+        {
+          path: "book",
+          element: <BookPage />,
+        },
+      ],
     },
     {
       path: "/login",
@@ -21,7 +43,7 @@ export default function App() {
       errorElement: <div>LOL error not found</div>,
     },
   ]);
-  
+
   return (
     <>
       <RouterProvider router={router} />
