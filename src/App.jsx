@@ -7,6 +7,7 @@ import Header from "./components/Header/index.jsx"
 import Footer from "./components/Footer/index.jsx"
 import BookPage from "./pages/book/index.jsx";
 import Home from "./components/Home/index.jsx";
+import './styles/reset.scss';
 
 const Layout = () => {
   return (

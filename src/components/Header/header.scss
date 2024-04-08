@@ -1,0 +1,79 @@
+.header-container {
+  .page-header {
+    display: flex;
+    max-width: 1347px;
+    height: 51px;
+    margin-top: 6px;
+
+    &__top {
+      display: flex;
+    }
+
+    &__bottom {
+      display: flex;
+      margin-left: 45px;
+    }
+
+    .page-header__top {
+      .page-header__logo {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+
+    .logo {
+      cursor: pointer;
+      display: block;
+
+      .fahasa-logo {
+        width: 50px;
+        height: 50px;
+      }
+
+      .icon-search {
+        position: relative;
+        font-size: 25px;
+        left: 45px;
+        top: -11px;
+        padding-right: 3px;
+        border-right: 1.5px solid #ddd;
+      }
+    }
+
+    .input-search {
+      height: 30px;
+      outline: none;
+      padding: 5px 40px;
+      border-radius: 6px;
+      border: 0.1px solid #ddd;
+      flex: 1;
+    }
+
+    .navigation {
+      display: flex;
+      gap: 20px;
+      list-style-type: none;
+      align-items: center;
+
+      &__item {
+        display: flex;
+        cursor: pointer;
+        width: 70px;
+        height: 30px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        align-items: center;
+        justify-content: center;
+        color: rgba(110, 110, 115, 1);
+        background: white;
+        ;
+      }
+    }
+  }
+}
+
+.custom-shadow {
+  box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.25);
+}
