@@ -1,6 +1,8 @@
 import React from "react";
 import logo from "../../assets/picture/fahasa_logo.png";
 import { RxMagnifyingGlass } from "react-icons/rx";
+import { IoMdSettings } from "react-icons/io";
+import { Drawer } from "antd";
 import "./header.scss";
 
 const Header = () => {
@@ -13,7 +15,6 @@ const Header = () => {
               <img className="fahasa-logo" src={logo} alt="" />
               <RxMagnifyingGlass className="icon-search" />
             </span>
-            
             <input
               className="input-search custom-shadow"
               type="text"
@@ -23,13 +24,18 @@ const Header = () => {
         </div>
 
         <div className="page-header__bottom">
-          <ul className="navigation">
-            <li className="navigation__item custom-shadow">Shounen</li>
-            <li className="navigation__item custom-shadow">Romance</li>
-            <li className="navigation__item custom-shadow">Comendy</li>
-            <li className="navigation__item custom-shadow">Action</li>
-            <li className="navigation__item custom-shadow">Sports</li>
-          </ul>
+          <div className="navigation">
+            <ul className="navigation-content">
+              <li className="navigation-content__item custom-shadow">Shounen</li>
+              <li className="navigation-content__item custom-shadow">Romance</li>
+              <li className="navigation-content__item custom-shadow">Comendy</li>
+              <li className="navigation-content__item custom-shadow">Action</li>
+              <li className="navigation-content__item custom-shadow">Sports</li>
+            </ul>
+            <div className="navigation-setting">
+              <IoMdSettings className="rotate setting-icon"/>
+          </div>
+          </div>
         </div>
       </header>
     </div>
