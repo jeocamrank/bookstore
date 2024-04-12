@@ -8,6 +8,7 @@ import Footer from "./components/Footer/index.jsx"
 import BookPage from "./pages/book/index.jsx";
 import Home from "./components/Home/index.jsx";
 import './styles/reset.scss';
+import RegisterPage from "./pages/register/index.jsx";
 
 const Layout = () => {
   return (
@@ -41,6 +42,11 @@ export default function App() {
     {
       path: "/login",
       element: <LoginPage />,
+      errorElement: <div>LOL error not found</div>,
+    },
+    {
+      path: "/register",
+      element: <RegisterPage />,
       errorElement: <div>LOL error not found</div>,
     },
   ]);
