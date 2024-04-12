@@ -34,7 +34,7 @@ const Header = () => {
             </ul>
             <div className="navigation-setting">
               <IoMdSettings className="rotate setting-icon"/>
-          </div>
+            </div>
           </div>
         </div>
       </header>
