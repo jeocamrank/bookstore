@@ -5,13 +5,28 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import "./register.scss";
+import { callRegister } from "../../services/api";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    const { fullName, email, password, phone } = values;
+    setIsSubmit(true);
+    const res = await callRegister(fullName, email, password, phone);
+    setIsSubmit(false);
+    if(res?.data?._id) {
+      message.success('Đăng ký tài khoản thành công!');
+      navigate('/login')
+    } else {
+      notification.error({
+        message: 'Có lỗi xảy ra',
+        description:
+          res.message && Array.isArray(res.message) ? res.message[0] : res.message,
+        duration: 5
+      })
+    }
   };
 
   return (
@@ -20,7 +35,7 @@ const RegisterPage = () => {
         <div className="register-form-window custom-shadow">
           <div>
             <div>
-              <img src={logo} alt="" />A c c h a n Ma n g a
+              <img src={logo} alt="" />A c c h a n M a n g a
             </div>
             <div>
               <p>Welcome back, Customers!</p>
@@ -83,6 +98,7 @@ const RegisterPage = () => {
               <Form.Item>
                 <Button
                   className="custom-register-button"
+                  type="primary"
                   htmlType="submit"
                   loading={isSubmit}
                 >
@@ -101,6 +117,9 @@ const RegisterPage = () => {
                   <FcGoogle className="google-icon"/>continue with google
                 </Button>
               </Form.Item>
+              <p className="text-to-login">
+                Do you already have an account? <Link to='/login'>Login here</Link>
+              </p>
             </Form>
           </div>
         </div>
