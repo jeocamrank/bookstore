@@ -6,6 +6,8 @@ const instance = axios.create({
     withCredentials: true,
 });
 
+instance.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('access_token')}`}
+
 // Add a request interceptor
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
@@ -19,7 +21,6 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    console.log('response: ', response)
     console.log('reponse-data: ', response.data)
     return response && response.data ? response.data : response;
   }, function (error) {
