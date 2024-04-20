@@ -81,12 +81,30 @@
         }
       }
 
-      .user-setting {
-        display: flex;
-        cursor: pointer;
-        font-size: 40px;
-        align-items: center;
-        color: rgb(205 32 39);
+      .navigation-setting {
+        height: 100%;
+        ul {
+          height: 100%;
+          list-style-type: none;
+          display: flex;
+          align-items: center;
+          gap: 30px;
+        }
+
+        &__item {
+          color: rgb(158, 13, 29);
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .icon-cart {
+          font-size: 24px;
+        }
+
+        .btn-login {
+          padding: 10px 13px;
+          border-radius: 6px;
+        }
       }
     }
   }
