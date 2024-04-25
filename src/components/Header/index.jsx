@@ -2,9 +2,9 @@ import React from "react";
 import logo from "../../assets/picture/fahasa_logo.png";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { IoMdSettings } from "react-icons/io";
-import { Badge, Drawer, Dropdown, Space, message } from "antd";
+import { Avatar, Badge, Drawer, Dropdown, Space, message } from "antd";
 import "./header.scss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { DownOutlined } from "@ant-design/icons";
 import { FiShoppingCart } from "react-icons/fi";
@@ -26,7 +26,7 @@ const Header = () => {
     }
   };
 
-  const items = [
+  let items = [
     {
       label: <label style={{ cursor: "pointer" }}>Quản lý tài khoản</label>,
       key: "account",
@@ -40,6 +40,13 @@ const Header = () => {
       key: "logout",
     },
   ];
+  if(user?.role === 'ADMIN') {
+    items.unshift({
+      label: <Link to='/admin'>Trang quản trị</Link>,
+      key: 'admin',
+    })
+  }
+  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${user?.avatar}`;
 
   return (
     <div className="header-container">
@@ -87,6 +94,7 @@ const Header = () => {
                     <Dropdown menu={{ items }} trigger={["click"]}>
                       <a onClick={(e) => e.preventDefault()}>
                         <Space>
+                          <Avatar src={urlAvatar} />
                            {user?.fullName}
                           <DownOutlined />
                         </Space>

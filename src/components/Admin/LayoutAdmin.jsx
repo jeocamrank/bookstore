@@ -10,10 +10,19 @@ import {
   MenuUnfoldOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Dropdown, Layout, Menu, Space, message, theme } from "antd";
+import {
+  Avatar,
+  Breadcrumb,
+  Dropdown,
+  Layout,
+  Menu,
+  Space,
+  message,
+  theme,
+} from "antd";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import './layout.scss';
+import "./layout.scss";
 import { callLogout } from "../../services/api";
 import { doLogoutAction } from "../../redux/account/accountSlice";
 
@@ -64,14 +73,22 @@ const LayoutAdmin = () => {
 
   const handleLogout = async () => {
     const res = await callLogout();
-    if(res && res.data) {
+    if (res && res.data) {
       dispatch(doLogoutAction());
-      message.success('Đăng xuất thành công');
-      navigate('/');
+      message.success("Đăng xuất thành công");
+      navigate("/");
     }
-  }
+  };
 
   const itemsDropdown = [
+    {
+      label: (
+        <label style={{ cursor: "pointer" }}>
+          <Link to="/" style={{color: 'black'}}>Trang chủ</Link>
+        </label>
+      ),
+      key: "home",
+    },
     {
       label: <label style={{ cursor: "pointer" }}>Quản lý tài khoản</label>,
       key: "account",
@@ -85,6 +102,9 @@ const LayoutAdmin = () => {
       key: "logout",
     },
   ];
+  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+    user?.avatar
+  }`;
 
   return (
     <Layout
@@ -120,15 +140,16 @@ const LayoutAdmin = () => {
           <Dropdown menu={{ items: itemsDropdown }} trigger={["click"]}>
             <a onClick={(e) => e.preventDefault()}>
               <Space>
-                Welcome {user?.fullName}
+                <Avatar src={urlAvatar} />
+                {user?.fullName}
                 <DownOutlined />
               </Space>
             </a>
           </Dropdown>
         </div>
-        <Content >
+        <Content>
           <div className="container-content">
-          <Outlet />
+            <Outlet />
           </div>
         </Content>
         <Footer

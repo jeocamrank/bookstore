@@ -11,6 +11,8 @@ import {
 } from "@ant-design/icons";
 import { render } from "react-dom";
 import UserViewDetail from "./UserViewDetail.jsx";
+import UserModalCreate from "./UserModalCreate.jsx";
+import UserImport from "./data/UserImport.jsx";
 
 const UserTable = () => {
   const [listUser, setListUser] = useState([]);
@@ -22,6 +24,8 @@ const UserTable = () => {
   const [sortQuery, setSortQuery] = useState("");
   const [dataViewDetail, setDataViewDetail] = useState("");
   const [openViewDetail, setOpenViewDetail] = useState(false);
+  const [openModalCreate, setOpenModalCreate] = useState(false);
+  const [openModalImport, setOpenModalImport] = useState(false);
 
   useEffect(() => {
     fetchUser();
@@ -50,12 +54,17 @@ const UserTable = () => {
       dataIndex: "_id",
       render: (text, record, index) => {
         return (
-          <a href="#" onClick={() => {
-            setDataViewDetail(record);
-            setOpenViewDetail(true);
-          }}>{record._id}</a>
-        )
-      }
+          <a
+            href="#"
+            onClick={() => {
+              setDataViewDetail(record);
+              setOpenViewDetail(true);
+            }}
+          >
+            {record._id}
+          </a>
+        );
+      },
     },
     {
       title: "Tên hiển thị",
@@ -116,20 +125,22 @@ const UserTable = () => {
 
   const ButtonHandle = () => {
     return (
-      <Row gutter={24} justify="space-between" style={{ marginBottom: '5px'}}>
-        <Col span={12} style={{ textAlign: 'left' }}>
-        
-        </Col>
-        <Col span={12} style={{ textAlign: 'right' }}>
-          <Button style={{ background: '#1677ff', color: 'white' }}>
+      <Row gutter={24} justify="space-between" style={{ marginBottom: "5px" }}>
+        <Col span={12} style={{ textAlign: "left" }}></Col>
+        <Col span={12} style={{ textAlign: "right" }}>
+          <Button type="primary" style={{ margin: "0 10px 0px 0" }}>
             <ExportOutlined />
             Export
           </Button>
-          <Button style={{ background: '#1677ff', color: 'white' }}>
+          <Button type="primary" style={{ margin: "0 10px 0px 0" }} onClick={() => setOpenModalImport(true)}>
             <CloudUploadOutlined />
             Import
           </Button>
-          <Button style={{ background: '#1677ff', color: 'white' }}>
+          <Button
+            type="primary"
+            style={{ margin: "0 10px 0px 0" }}
+            onClick={() => setOpenModalCreate(true)}
+          >
             <PlusOutlined />
             Thêm mới
           </Button>
@@ -162,13 +173,34 @@ const UserTable = () => {
           pageSize: pageSize,
           showSizeChanger: true,
           total: total,
+          showTotal: (total, range) => {
+            return (
+              <div>
+                {range[0]}-{range[1]} trên {total} rows{" "}
+              </div>
+            );
+          },
         }}
       />
-      <UserViewDetail 
-      openViewDetail={openViewDetail}
-      setOpenViewDetail={setOpenViewDetail}
-      dataViewDetail={dataViewDetail}
-      setDataViewDetail={setDataViewDetail}
+
+      <UserModalCreate
+        openModalCreate={openModalCreate}
+        setOpenModalCreate={setOpenModalCreate}
+        fetchUser={fetchUser}
+      />
+
+      <UserViewDetail
+        openViewDetail={openViewDetail}
+        setOpenViewDetail={setOpenViewDetail}
+        dataViewDetail={dataViewDetail}
+        setDataViewDetail={setDataViewDetail}
+        fetchUser={fetchUser}
+      />
+
+      <UserImport
+        openModalImport={openModalImport}
+        setOpenModalImport={setOpenModalImport}
+        fetchUser={fetchUser}
       />
     </>
   );
