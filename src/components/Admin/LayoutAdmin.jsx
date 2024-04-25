@@ -13,10 +13,11 @@ import {
 import { Breadcrumb, Dropdown, Layout, Menu, Space, message, theme } from "antd";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-const { Content, Footer, Sider } = Layout;
 import './layout.scss';
 import { callLogout } from "../../services/api";
 import { doLogoutAction } from "../../redux/account/accountSlice";
+
+const { Content, Footer, Sider } = Layout;
 
 const items = [
   {
@@ -125,8 +126,10 @@ const LayoutAdmin = () => {
             </a>
           </Dropdown>
         </div>
-        <Content>
+        <Content >
+          <div className="container-content">
           <Outlet />
+          </div>
         </Content>
         <Footer
           style={{

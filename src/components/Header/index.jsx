@@ -87,7 +87,7 @@ const Header = () => {
                     <Dropdown menu={{ items }} trigger={["click"]}>
                       <a onClick={(e) => e.preventDefault()}>
                         <Space>
-                          <img src={user?.avatar} alt="" /> {user?.fullName}
+                           {user?.fullName}
                           <DownOutlined />
                         </Space>
                       </a>

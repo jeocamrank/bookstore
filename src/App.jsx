@@ -1,58 +1,63 @@
-import { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ContactPage from "./pages/contact/index.jsx";
+import React, { useEffect, useState } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import BookPage from './pages/book';
+import ContactPage from './pages/contact';
+import LoginPage from './pages/login';
 import { Outlet } from "react-router-dom";
-import Header from "./components/Header/index.jsx";
-import Footer from "./components/Footer/index.jsx";
-import BookPage from "./pages/book/index.jsx";
-import Home from "./components/Home/index.jsx";
-import "./styles/reset.scss";
-import RegisterPage from "./pages/register/index.jsx";
-import LoginPage from "./pages/login/index.jsx";
-import { callFetchAccount } from "./services/api.js";
-import { useDispatch, useSelector } from "react-redux";
-import { doGetAccountAction } from "./redux/account/accountSlice.js";
-import Loading from "./components/Loading/index.jsx";
-import NotFound from "./components/NotFound/index.jsx";
-import AdminPage from "./pages/admin/index.jsx";
-import ProtectedRound from "./components/ProtectedRoute/index.jsx";
-import LayoutAdmin from "./components/Admin/LayoutAdmin.jsx";
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './components/Home';
+import RegisterPage from './pages/register';
+import { callFetchAccount } from './services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { doGetAccountAction } from './redux/account/accountSlice';
+import Loading from './components/Loading';
+import NotFound from './components/NotFound';
+import AdminPage from './pages/admin';
+import ProtectedRoute from './components/ProtectedRoute';
+import LayoutAdmin from './components/Admin/LayoutAdmin';
+import './styles/reset.scss';
+import UserTable from './components/Admin/User/UserTable';
 
 const Layout = () => {
   return (
-    <div className="layout-app">
+    <div className='layout-app'>
       <Header />
       <Outlet />
       <Footer />
     </div>
-  );
-};
+  )
+}
 
 export default function App() {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const isLoading = useSelector(state => state.account.isLoading)
 
   const getAccount = async () => {
     if (
-      window.location.pathname === "/login" ||
-      window.location.pathname === "/register"
+      window.location.pathname === '/login'
+      || window.location.pathname === '/register'
     )
       return;
+
     const res = await callFetchAccount();
     if (res && res.data) {
-      dispatch(doGetAccountAction(res.data));
+      dispatch(doGetAccountAction(res.data))
     }
-  };
+  }
+
   useEffect(() => {
     getAccount();
-  }, []);
+  }, [])
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
       errorElement: <NotFound />,
-
       children: [
         { index: true, element: <Home /> },
         {
@@ -72,15 +77,14 @@ export default function App() {
       errorElement: <NotFound />,
       children: [
         {
-          index: true,
-          element: 
-          <ProtectedRound>
-            <AdminPage />
-          </ProtectedRound>
+          index: true, element:
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
         },
         {
           path: "user",
-          element: <ContactPage />,
+          element: <UserTable />,
         },
         {
           path: "book",
@@ -89,26 +93,30 @@ export default function App() {
       ],
     },
 
+
     {
       path: "/login",
-      element: <LoginPage />
+      element: <LoginPage />,
     },
+
     {
       path: "/register",
-      element: <RegisterPage />
+      element: <RegisterPage />,
     },
   ]);
 
   return (
     <>
-      {isAuthenticated === true ||
-      window.location.pathname === "/login" ||
-      window.location.pathname === "/register" ||
-      window.location.pathname === "/" ? (
-        <RouterProvider router={router} />
-      ) : (
-        <Loading />
-      )}
+      {
+        isLoading === false
+          || window.location.pathname === '/login'
+          || window.location.pathname === '/register'
+          || window.location.pathname === '/'
+          ?
+          <RouterProvider router={router} />
+          :
+          <Loading />
+      }
     </>
-  );
+  )
 }
