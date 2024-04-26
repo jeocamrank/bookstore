@@ -5,6 +5,7 @@ import { callFetchListUser } from "../../../services/api.js";
 import {
   CloudUploadOutlined,
   DeleteOutlined,
+  EditOutlined,
   ExportOutlined,
   PlusOutlined,
   ReloadOutlined,
@@ -13,6 +14,8 @@ import { render } from "react-dom";
 import UserViewDetail from "./UserViewDetail.jsx";
 import UserModalCreate from "./UserModalCreate.jsx";
 import UserImport from "./data/UserImport.jsx";
+import * as XLSX from "xlsx";
+import UserModalUpdate from "./UserModalUpdate.jsx";
 
 const UserTable = () => {
   const [listUser, setListUser] = useState([]);
@@ -26,6 +29,8 @@ const UserTable = () => {
   const [openViewDetail, setOpenViewDetail] = useState(false);
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalImport, setOpenModalImport] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState("");
 
   useEffect(() => {
     fetchUser();
@@ -94,6 +99,18 @@ const UserTable = () => {
             <DeleteOutlined
               style={{ color: "red", cursor: "pointer", fontSize: "17px" }}
             />
+            <EditOutlined
+              style={{
+                color: "Orange",
+                marginLeft: "15px",
+                cursor: "pointer",
+                fontSize: "17px",
+              }}
+              onClick={() => {
+                setOpenModalUpdate(true);
+                setDataUpdate(record);
+              }}
+            />
           </>
         );
       },
@@ -128,11 +145,19 @@ const UserTable = () => {
       <Row gutter={24} justify="space-between" style={{ marginBottom: "5px" }}>
         <Col span={12} style={{ textAlign: "left" }}></Col>
         <Col span={12} style={{ textAlign: "right" }}>
-          <Button type="primary" style={{ margin: "0 10px 0px 0" }}>
+          <Button
+            type="primary"
+            style={{ margin: "0 10px 0px 0" }}
+            onClick={() => handleExportData()}
+          >
             <ExportOutlined />
             Export
           </Button>
-          <Button type="primary" style={{ margin: "0 10px 0px 0" }} onClick={() => setOpenModalImport(true)}>
+          <Button
+            type="primary"
+            style={{ margin: "0 10px 0px 0" }}
+            onClick={() => setOpenModalImport(true)}
+          >
             <CloudUploadOutlined />
             Import
           </Button>
@@ -149,6 +174,7 @@ const UserTable = () => {
             onClick={() => {
               setFilter("");
               setSortQuery("");
+              setCurrent(1);
             }}
           >
             <ReloadOutlined />
@@ -156,6 +182,16 @@ const UserTable = () => {
         </Col>
       </Row>
     );
+  };
+
+  const handleExportData = () => {
+    console.log(listUser);
+    if (listUser.length > 0) {
+      const worksheet = XLSX.utils.json_to_sheet(listUser);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+      XLSX.writeFile(workbook, "ExportUser.csv");
+    }
   };
 
   return (
@@ -200,6 +236,14 @@ const UserTable = () => {
       <UserImport
         openModalImport={openModalImport}
         setOpenModalImport={setOpenModalImport}
+        fetchUser={fetchUser}
+      />
+
+      <UserModalUpdate
+        openModalUpdate={openModalUpdate}
+        setOpenModalUpdate={setOpenModalUpdate}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
         fetchUser={fetchUser}
       />
     </>
