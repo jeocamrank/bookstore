@@ -9,8 +9,6 @@ import {
   message,
   notification,
 } from "antd";
-import InputSearch from "./InputSearch.jsx";
-import { callDeleteUser, callFetchListUser } from "../../../services/api.js";
 import {
   CloudUploadOutlined,
   DeleteOutlined,
@@ -19,15 +17,12 @@ import {
   PlusOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
+import InputSearch from "./InputSearch.jsx";
 import { render } from "react-dom";
-import UserViewDetail from "./UserViewDetail.jsx";
-import UserModalCreate from "./UserModalCreate.jsx";
-import UserImport from "./data/UserImport.jsx";
 import * as XLSX from "xlsx";
-import UserModalUpdate from "./UserModalUpdate.jsx";
 
-const UserTable = () => {
-  const [listUser, setListUser] = useState([]);
+const BookTable = () => {
+  const [listBook, setListBook] = useState([]);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [total, setTotal] = useState(0);
@@ -54,9 +49,9 @@ const UserTable = () => {
     if (sortQuery) {
       query += `&${sortQuery}`;
     }
-    const res = await callFetchListUser(query);
+    const res = await callFetchListBook(query);
     if (res && res.data) {
-      setListUser(res.data.result);
+      setListBook(res.data.result);
       setTotal(res.data.meta.total);
     }
     setIsLoading(false);
@@ -109,7 +104,7 @@ const UserTable = () => {
               placement="leftTop"
               title={"Xác nhận xóa user"}
               description={`Bạn có chắc muốn xóa user : ${record.fullName}?`}
-              onConfirm={() => handleDeleteUser(record._id)}
+              onConfirm={() => handleDeleteBook(record._id)}
               okText="Xác nhận"
               cancelText="Hủy"
             >
@@ -203,17 +198,17 @@ const UserTable = () => {
   };
 
   const handleExportData = () => {
-    console.log(listUser);
-    if (listUser.length > 0) {
-      const worksheet = XLSX.utils.json_to_sheet(listUser);
+    console.log(listBook);
+    if (listBook.length > 0) {
+      const worksheet = XLSX.utils.json_to_sheet(listBook);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
       XLSX.writeFile(workbook, "ExportUser.csv");
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    const res = await callDeleteUser(userId);
+  const handleDeleteBook = async (userId) => {
+    const res = await callDeleteBook(userId);
     if (res && res.data) {
       message.success("Xóa user thành công");
       fetchUser();
@@ -231,7 +226,7 @@ const UserTable = () => {
       <ButtonHandle />
       <Table
         columns={columns}
-        dataSource={listUser}
+        dataSource={listBook}
         onChange={onChange}
         rowKey="_id"
         loading={isLoading}
@@ -249,35 +244,7 @@ const UserTable = () => {
           },
         }}
       />
-
-      <UserModalCreate
-        openModalCreate={openModalCreate}
-        setOpenModalCreate={setOpenModalCreate}
-        fetchUser={fetchUser}
-      />
-
-      <UserViewDetail
-        openViewDetail={openViewDetail}
-        setOpenViewDetail={setOpenViewDetail}
-        dataViewDetail={dataViewDetail}
-        setDataViewDetail={setDataViewDetail}
-        fetchUser={fetchUser}
-      />
-
-      <UserImport
-        openModalImport={openModalImport}
-        setOpenModalImport={setOpenModalImport}
-        fetchUser={fetchUser}
-      />
-
-      <UserModalUpdate
-        openModalUpdate={openModalUpdate}
-        setOpenModalUpdate={setOpenModalUpdate}
-        dataUpdate={dataUpdate}
-        setDataUpdate={setDataUpdate}
-        fetchUser={fetchUser}
-      />
     </>
   );
 };
-export default UserTable;
+export default BookTable;
