@@ -20,6 +20,10 @@ import {
 import InputSearch from "./InputSearch.jsx";
 import { render } from "react-dom";
 import * as XLSX from "xlsx";
+import { callDeleteBook, callFetchListBook } from "../../../services/api.js";
+import BookViewDetail from "./BookViewDetail.jsx";
+import BookModalCreate from "./BookModalCreate.jsx";
+import BookModalUpdate from "./BookModalUpdate.jsx";
 
 const BookTable = () => {
   const [listBook, setListBook] = useState([]);
@@ -28,19 +32,18 @@ const BookTable = () => {
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [filter, setFilter] = useState("");
-  const [sortQuery, setSortQuery] = useState("");
+  const [sortQuery, setSortQuery] = useState("sort=-updatedAt");
   const [dataViewDetail, setDataViewDetail] = useState("");
   const [openViewDetail, setOpenViewDetail] = useState(false);
   const [openModalCreate, setOpenModalCreate] = useState(false);
-  const [openModalImport, setOpenModalImport] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [dataUpdate, setDataUpdate] = useState("");
 
   useEffect(() => {
-    fetchUser();
+    fetchBook();
   }, [current, pageSize, filter, sortQuery]);
 
-  const fetchUser = async () => {
+  const fetchBook = async () => {
     setIsLoading(true);
     let query = `current=${current}&pageSize=${pageSize}`;
     if (filter) {
@@ -76,34 +79,39 @@ const BookTable = () => {
       },
     },
     {
-      title: "Tên hiển thị",
-      dataIndex: "fullName",
+      title: "Tên sách",
+      dataIndex: "mainText",
       sorter: true,
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: "Thể loại",
+      dataIndex: "category",
       sorter: true,
     },
     {
-      title: "Số điện thoại",
-      dataIndex: "phone",
+      title: "Tác giả",
+      dataIndex: "author",
       sorter: true,
     },
     {
-      title: "Role",
-      dataIndex: "role",
+      title: "Giá tiền",
+      dataIndex: "price",
+      sorter: true,
+    },
+    {
+      title: "Ngày cập nhật",
+      dataIndex: "updatedAt",
       sorter: true,
     },
     {
       title: "Action",
       render: (text, record, index) => {
         return (
-          <>
+          <div style={{ width: "100px" }}>
             <Popconfirm
               placement="leftTop"
               title={"Xác nhận xóa user"}
-              description={`Bạn có chắc muốn xóa user : ${record.fullName}?`}
+              description={`Bạn có chắc muốn xóa book : ${record.mainText}?`}
               onConfirm={() => handleDeleteBook(record._id)}
               okText="Xác nhận"
               cancelText="Hủy"
@@ -124,7 +132,7 @@ const BookTable = () => {
                 setDataUpdate(record);
               }}
             />
-          </>
+          </div>
         );
       },
     },
@@ -169,14 +177,6 @@ const BookTable = () => {
           <Button
             type="primary"
             style={{ margin: "0 10px 0px 0" }}
-            onClick={() => setOpenModalImport(true)}
-          >
-            <CloudUploadOutlined />
-            Import
-          </Button>
-          <Button
-            type="primary"
-            style={{ margin: "0 10px 0px 0" }}
             onClick={() => setOpenModalCreate(true)}
           >
             <PlusOutlined />
@@ -211,7 +211,7 @@ const BookTable = () => {
     const res = await callDeleteBook(userId);
     if (res && res.data) {
       message.success("Xóa user thành công");
-      fetchUser();
+      fetchBook();
     } else {
       notification.error({
         message: "Có lỗi xảy ra",
@@ -243,6 +243,28 @@ const BookTable = () => {
             );
           },
         }}
+      />
+
+      <BookViewDetail
+        openViewDetail={openViewDetail}
+        setOpenViewDetail={setOpenViewDetail}
+        dataViewDetail={dataViewDetail}
+        setDataViewDetail={setDataViewDetail}
+        fetchBook={fetchBook}
+      />
+
+      <BookModalCreate
+        openModalCreate={openModalCreate}
+        setOpenModalCreate={setOpenModalCreate}
+        fetchBook={fetchBook}
+      />
+
+      <BookModalUpdate
+        openModalUpdate={openModalUpdate}
+        setOpenModalUpdate={setOpenModalUpdate}
+        dataUpdate={dataUpdate}
+        setDataUpdate={setDataUpdate}
+        fetchBook={fetchBook}
       />
     </>
   );
