@@ -54,7 +54,7 @@ const Header = () => {
         <div className="page-header__top">
           <div className="page-header__logo">
             <span className="logo">
-              <img className="fahasa-logo" src={logo} alt="" />
+              <a href="/"><img className="fahasa-logo" src={logo} alt="" /></a>
               <RxMagnifyingGlass className="icon-search" />
             </span>
             <input
@@ -87,7 +87,7 @@ const Header = () => {
                     <FiShoppingCart className="icon-cart" />
                   </Badge>
                 </li>
-                <li className="navigation-setting__item btn-login custom-shadow">
+                <li className="navigation-setting__item btn-login text-ellipsis" style={{maxWidth: 152}}>
                   {!isAuthenticated ? (
                     <span className="" onClick={() => navigate("/login")}> Đăng Nhập</span>
                   ) : (

@@ -102,12 +102,16 @@
         }
 
         .btn-login {
-          padding: 10px 13px;
-          border-radius: 6px;
         }
       }
     }
   }
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .custom-shadow {

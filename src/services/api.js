@@ -63,6 +63,10 @@ export const callUploadBook = () => {
   return axios.post(`/api/v1/file/upload`);
 };
 
+export const callFetchBookById = (id) => {
+  return axios.get(`/api/v1/book/${id}`);
+}
+
 export const callUploadBookImg = (fileImg) => {
   const bodyFormData = new FormData();
   bodyFormData.append("fileImg", fileImg);

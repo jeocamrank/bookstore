@@ -103,7 +103,7 @@ const BookModalUpdate = (props) => {
         setIsSubmit(true)
         const res = await callCreateBook(thumbnail, slider, mainText, author, price, sold, quantity, category);
         if (res && res.data) {
-            message.success('Tạo mới book thành công');
+            message.success('Update book thành công');
             form.resetFields();
             setDataSlider([]);
             setDataThumbnail([])
