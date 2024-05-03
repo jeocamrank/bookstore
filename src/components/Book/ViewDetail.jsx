@@ -6,12 +6,15 @@ import ModalGallery from "./ModalGallery";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { BsCartPlus } from "react-icons/bs";
 import BookLoader from "./BookLoader.jsx";
+import { useDispatch } from "react-redux";
+import { doAddBookAction } from "../../redux/order/orderSlice.js";
 
 const ViewDetail = (props) => {
   const { dataBook } = props;
   const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const [currentQuantity, setCurrentQuantity] = useState(1);
+  const dispatch = useDispatch();
   const refGallery = useRef(null);
 
   const images = dataBook?.items ?? [];
@@ -22,6 +25,30 @@ const ViewDetail = (props) => {
     setIsOpenModalGallery(true);
     setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
     // refGallery?.current?.fullScreen()
+  };
+
+  const handleChangeButton = (type) => {
+    if (type === "MINUS") {
+      if (currentQuantity - 1 <= 0) return;
+      setCurrentQuantity(currentQuantity - 1);
+    }
+    if (type === "PLUS") {
+      if (currentQuantity === +dataBook.quantity) return;
+      setCurrentQuantity(currentQuantity + 1);
+    }
+  };
+
+  const handleChangeInput = (value) => {
+    if (!isNaN(value)) {
+      // not a number
+      if (+value > 0 && +value < +dataBook.quantity) {
+        setCurrentQuantity(+value);
+      }
+    }
+  };
+
+  const handleAddtoCart = (quantity, book) => {
+    dispatch(doAddBookAction({ quantity, detail: book, _id: book._id }));
   };
 
   const onChange = (value) => {
@@ -76,9 +103,7 @@ const ViewDetail = (props) => {
                   <div className="author">
                     Tác giả: <a href="#">{dataBook?.author}</a>{" "}
                   </div>
-                  <div className="title">
-                  {dataBook?.mainText}
-                  </div>
+                  <div className="title">{dataBook?.mainText}</div>
                   <div className="rating">
                     <Rate
                       value={5}
@@ -103,33 +128,46 @@ const ViewDetail = (props) => {
                       <span className="left-side">Vận chuyển</span>
                       <span className="right-side">Miễn phí vận chuyển</span>
                     </div>
-                    <div style={{marginTop: 10}}>
+                    <div style={{ marginTop: 10 }}>
                       <span className="left-side">Thể loại</span>
                       <span className="right-side">{dataBook.category}</span>
                     </div>
-                    <div style={{marginTop: 10}}>
+                    <div style={{ marginTop: 10 }}>
                       <span className="left-side">Tác giả</span>
                       <span className="right-side">{dataBook.author}</span>
                     </div>
-                    <div style={{marginTop: 10}}>
+                    <div style={{ marginTop: 10 }}>
                       <span className="left-side">Hình thức</span>
                       <span className="right-side">Bìa cứng</span>
                     </div>
                   </div>
                   <div className="quantity">
-                    <span className="left-side" style={{fontWeight: 'bold', color: 'black'}}>Số lượng</span>
+                    <span
+                      className="left-side"
+                      style={{ fontWeight: "bold", color: "black" }}
+                    >
+                      Số lượng
+                    </span>
                     <span className="right-side">
-                      <button>
+                      <button onClick={() => handleChangeButton("MINUS")}>
                         <MinusOutlined />
                       </button>
-                      <input defaultValue={1} />
-                      <button>
+                      <input
+                        onChange={(event) =>
+                          handleChangeInput(event.target.value)
+                        }
+                        value={currentQuantity}
+                      />
+                      <button onClick={() => handleChangeButton("MINUS")}>
                         <PlusOutlined />
                       </button>
                     </span>
                   </div>
                   <div className="buy">
-                    <button className="cart">
+                    <button
+                      className="cart"
+                      onClick={() => handleAddtoCart(currentQuantity, dataBook)}
+                    >
                       <BsCartPlus className="icon-cart" />
                       <span>Thêm vào giỏ hàng</span>
                     </button>

@@ -16,6 +16,7 @@ const Header = () => {
   const user = useSelector((state) => state.account.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const carts = useSelector(state => state.order.carts);
 
   const handleLogout = async () => {
     const res = await callLogout();
@@ -83,7 +84,7 @@ const Header = () => {
             <nav className="navigation-setting">
               <ul>
                 <li className="navigation-setting__item">
-                  <Badge count={5} size={"small"}>
+                  <Badge count={carts?.length ?? 0} size={"small"} showZero>
                     <FiShoppingCart className="icon-cart" />
                   </Badge>
                 </li>
