@@ -1,0 +1,54 @@
+.popover-carts {
+  max-width: 350px;
+  .pop-cart-body {
+    width: 100%;
+    .pop-cart-content {
+      max-height: 300px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      .book {
+        margin-top: 5px;
+        position: relative;
+        display: flex;
+        & img {
+          width: 20%;
+        }
+
+        .title {
+          max-width: 180px;
+          margin-left: 5px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .price {
+          position: absolute;
+          right: 0;
+          font-weight: 600;
+          color: rgb(158, 13, 29);
+        }
+      }
+    }
+
+    .pop-cart-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+
+      & button {
+        padding: 10px;
+        color: #fff;
+        overflow: visible;
+        border-radius: 4px;
+        background: rgb(158, 13, 29);
+        border: none;
+        float: right;
+      }
+
+      & button:hover {
+        background: rgb(255, 0, 30);
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import React from "react";
 import logo from "../../assets/picture/fahasa_logo.png";
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { IoMdSettings } from "react-icons/io";
-import { Avatar, Badge, Drawer, Dropdown, Space, message } from "antd";
+import { Avatar, Badge, Drawer, Dropdown, Popover, Space, message } from "antd";
 import "./header.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ const Header = () => {
   const user = useSelector((state) => state.account.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const carts = useSelector(state => state.order.carts);
+  const carts = useSelector((state) => state.order.carts);
 
   const handleLogout = async () => {
     const res = await callLogout();
@@ -41,13 +41,83 @@ const Header = () => {
       key: "logout",
     },
   ];
-  if(user?.role === 'ADMIN') {
+  if (user?.role === "ADMIN") {
     items.unshift({
-      label: <Link to='/admin'>Trang quản trị</Link>,
-      key: 'admin',
-    })
+      label: <Link to="/admin">Trang quản trị</Link>,
+      key: "admin",
+    });
   }
-  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${user?.avatar}`;
+  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
+    user?.avatar
+  }`;
+
+  const contentPopver = () => {
+    return (
+      <div className="pop-cart-body">
+        <div className="pop-cart-content">
+          {carts?.map((book, index) => {
+            return (
+              <div className="book" key={`book-${index}`}>
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/book/${
+                    book?.detail?.thumbnail
+                  }`}
+                />
+                <div className="title">{book?.detail?.mainText}</div>
+                <div className="price">
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(book?.detail?.price)}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="pop-cart-footer">
+          <Link to="/order">
+            <button style={{cursor: 'pointer'}}>Xem giỏ hàng</button>
+          </Link>
+        </div>
+      </div>
+    );
+  };
+
+  // const contentPopver = () => {
+  //   return (
+  //     <div className="pop-cart-body">
+  //       <div className="pop-cart-content">
+  //         <div className="book">
+  //           <img
+  //             src={'http://localhost:8080/images/book/5-c62daefbb240e7fe8c6d96a4b745824f.jpg'}
+  //           />
+  //           <div className="title">
+  //             Naruto
+  //           </div>
+  //           <div className="price">
+  //             99.999đ
+  //           </div>
+  //         </div>
+
+  //         <div className="book">
+  //           <img
+  //             src={'http://localhost:8080/images/book/5-c62daefbb240e7fe8c6d96a4b745824f.jpg'}
+  //           />
+  //           <div className="title">
+  //             Naruto
+  //           </div>
+  //           <div className="price">
+  //             99.999đ
+  //           </div>
+  //         </div>
+
+  //       </div>
+  //       <div className="pop-cart-footer">
+  //         <button>Xem giỏ hàng</button>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   return (
     <div className="header-container">
@@ -55,7 +125,9 @@ const Header = () => {
         <div className="page-header__top">
           <div className="page-header__logo">
             <span className="logo">
-              <a href="/"><img className="fahasa-logo" src={logo} alt="" /></a>
+              <a href="/">
+                <img className="fahasa-logo" src={logo} alt="" />
+              </a>
               <RxMagnifyingGlass className="icon-search" />
             </span>
             <input
@@ -84,19 +156,39 @@ const Header = () => {
             <nav className="navigation-setting">
               <ul>
                 <li className="navigation-setting__item">
-                  <Badge count={carts?.length ?? 0} size={"small"} showZero>
-                    <FiShoppingCart className="icon-cart" />
-                  </Badge>
+                  <Popover
+                    className="popover-carts"
+                    placement="topRight"
+                    rootClassName="popover-carts"
+                    title={"Sản phẩm mới thêm"}
+                    content={contentPopver}
+                    arrow={true}
+                  >
+                    <Badge count={carts?.length ?? 0} size={"small"} showZero>
+                      <Link to="/order">
+                        <FiShoppingCart
+                          color="rgb(158, 13, 29)"
+                          className="icon-cart"
+                        />
+                      </Link>
+                    </Badge>
+                  </Popover>
                 </li>
-                <li className="navigation-setting__item btn-login text-ellipsis" style={{maxWidth: 152}}>
+                <li
+                  className="navigation-setting__item btn-login text-ellipsis"
+                  style={{ maxWidth: 152 }}
+                >
                   {!isAuthenticated ? (
-                    <span className="" onClick={() => navigate("/login")}> Đăng Nhập</span>
+                    <span className="" onClick={() => navigate("/login")}>
+                      {" "}
+                      Đăng Nhập
+                    </span>
                   ) : (
                     <Dropdown menu={{ items }} trigger={["click"]}>
                       <a onClick={(e) => e.preventDefault()}>
                         <Space>
                           <Avatar src={urlAvatar} />
-                           {user?.fullName}
+                          {user?.fullName}
                           <DownOutlined />
                         </Space>
                       </a>

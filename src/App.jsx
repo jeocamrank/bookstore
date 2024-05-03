@@ -20,8 +20,10 @@ import AdminPage from './pages/admin';
 import ProtectedRoute from './components/ProtectedRoute';
 import LayoutAdmin from './components/Admin/LayoutAdmin';
 import './styles/reset.scss';
+import './styles/global.scss';
 import UserTable from './components/Admin/User/UserTable';
 import BookTable from './components/Admin/Book/BookTable';
+import ViewOrder from './components/Order/viewOrder';
 
 const Layout = () => {
   return (
@@ -68,6 +70,10 @@ export default function App() {
         {
           path: "book/:slug",
           element: <BookPage />,
+        },
+        {
+          path: "order",
+          element: <ViewOrder />,
         },
       ],
     },
