@@ -80,6 +80,7 @@ export const callUploadBookImg = (fileImg) => {
     },
   });
 };
+///////////////////////////////////////////////////////
 
 export const callPlaceOrder = (data) => {
   return axios.post('/api/v1/order', {
@@ -87,3 +88,6 @@ export const callPlaceOrder = (data) => {
   })
 }
 
+export const callFethListHistory = () => {
+  return axios.get(`/api/v1/history?`);
+}

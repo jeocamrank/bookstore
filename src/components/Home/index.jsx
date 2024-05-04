@@ -21,7 +21,7 @@ import "./home.scss";
 import { callFetchCategory, callFetchListBook } from "../../services/api";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { FcBookmark } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const contentStyle = {
   height: "320px",
@@ -30,6 +30,7 @@ const contentStyle = {
 };
 
 const Home = () => {
+  const [searchTerm, setSearchTerm] = useOutletContext();
   const [listCategory, setListCategory] = useState([]);
   const [listBook, setListBook] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -57,7 +58,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchBook();
-  }, [current, pageSize, filter, sortQuery]);
+  }, [current, pageSize, filter, sortQuery, searchTerm]);
 
   const fetchBook = async () => {
     setIsLoading(true);
@@ -68,6 +69,10 @@ const Home = () => {
     if (sortQuery) {
       query += `&${sortQuery}`;
     }
+    if(searchTerm) {
+      query += `&mainText=/${searchTerm}/i`
+    }
+
     const res = await callFetchListBook(query);
     if (res && res.data) {
       setListBook(res.data.result);
@@ -185,7 +190,7 @@ const Home = () => {
           <div className="right-content__body-content">
             <div className="body_content-right custom-shadow">
               <img
-                src="http://localhost:8080/images/book/3-cd33ea8d2a87955b4aed93c3f56f41af.jpg"
+                src="https://bookstore-s4rx.onrender.com/images/book/3-cd33ea8d2a87955b4aed93c3f56f41af.jpg"
                 alt=""
               />
             </div>
