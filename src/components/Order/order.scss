@@ -72,4 +72,12 @@
             }
         }
     }
+
+    .order-book-empty {
+        background: white;
+        font-weight: 500;
+        padding-top: 20px;
+        height: 500px;
+        border-radius: 8px;
+    }
 }

@@ -45,6 +45,10 @@ export const orderSlide = createSlice({
 
     doDeleteItemCartAction: (state, action) => {
       state.carts = state.carts.filter(c => c._id !== action.payload._id)
+    },
+
+    doPlaceOrderAction: (state, action) => {
+      state.carts = [];
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -52,6 +56,6 @@ export const orderSlide = createSlice({
   extraReducers: (builder) => {},
 });
 
-export const { doAddBookAction, doUpdateCartAction, doDeleteItemCartAction } = orderSlide.actions;
+export const { doAddBookAction, doUpdateCartAction, doDeleteItemCartAction, doPlaceOrderAction } = orderSlide.actions;
 
 export default orderSlide.reducer;

@@ -24,6 +24,7 @@ import './styles/global.scss';
 import UserTable from './components/Admin/User/UserTable';
 import BookTable from './components/Admin/Book/BookTable';
 import ViewOrder from './components/Order/viewOrder';
+import OrderPage from './pages/order';
 
 const Layout = () => {
   return (
@@ -73,7 +74,7 @@ export default function App() {
         },
         {
           path: "order",
-          element: <ViewOrder />,
+          element: <OrderPage />,
         },
       ],
     },

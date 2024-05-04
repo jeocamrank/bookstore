@@ -7,6 +7,7 @@ import {
   doUpdateCartAction,
 } from "../../redux/order/orderSlice";
 import { useEffect, useState } from "react";
+import { Empty } from 'antd';
 
 const ViewOrder = (props) => {
   const carts = useSelector((state) => state.order.carts);
@@ -95,6 +96,12 @@ const ViewOrder = (props) => {
                 </div>
               );
             })}
+            {carts.length === 0 && 
+            <div className="order-book-empty">
+              <Empty 
+              description={'Không có sản phẩm trong giỏ hàng'}
+              />
+            </div>}
           </Col>
           <Col md={6} xs={24}>
             <div className="order-sum">
@@ -118,7 +125,7 @@ const ViewOrder = (props) => {
                 </span>
               </div>
               <Divider style={{ margin: "10px 0" }} />
-              <button>Mua Hàng ({carts?.length ?? 0})</button>
+              <button onClick={() => props.setCurrentStep(1)}>Mua Hàng ({carts?.length ?? 0})</button>
             </div>
           </Col>
         </Row>

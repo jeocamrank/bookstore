@@ -83,42 +83,6 @@ const Header = () => {
     );
   };
 
-  // const contentPopver = () => {
-  //   return (
-  //     <div className="pop-cart-body">
-  //       <div className="pop-cart-content">
-  //         <div className="book">
-  //           <img
-  //             src={'http://localhost:8080/images/book/5-c62daefbb240e7fe8c6d96a4b745824f.jpg'}
-  //           />
-  //           <div className="title">
-  //             Naruto
-  //           </div>
-  //           <div className="price">
-  //             99.999đ
-  //           </div>
-  //         </div>
-
-  //         <div className="book">
-  //           <img
-  //             src={'http://localhost:8080/images/book/5-c62daefbb240e7fe8c6d96a4b745824f.jpg'}
-  //           />
-  //           <div className="title">
-  //             Naruto
-  //           </div>
-  //           <div className="price">
-  //             99.999đ
-  //           </div>
-  //         </div>
-
-  //       </div>
-  //       <div className="pop-cart-footer">
-  //         <button>Xem giỏ hàng</button>
-  //       </div>
-  //     </div>
-  //   );
-  // };
-
   return (
     <div className="header-container">
       <header className="page-header">
